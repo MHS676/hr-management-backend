@@ -16,10 +16,7 @@ import {
 } from '../types';
 
 class AttendanceController {
-    /**
-     * GET /attendance
-     * Returns attendance records with optional filters and pagination.
-     */
+
     public async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const query: AttendanceFilterQuery = {
@@ -53,10 +50,7 @@ class AttendanceController {
         }
     }
 
-    /**
-     * GET /attendance/:id
-     * Returns a single attendance record by ID.
-     */
+ 
     public async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const id: number = parseInt(req.params.id as string, 10);
@@ -74,11 +68,7 @@ class AttendanceController {
         }
     }
 
-    /**
-     * POST /attendance
-     * Creates or upserts an attendance entry.
-     * If (employee_id, date) exists, updates the check_in_time.
-     */
+
     public async create(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { error, value } = createAttendanceSchema.validate(req.body);
@@ -106,10 +96,7 @@ class AttendanceController {
         }
     }
 
-    /**
-     * PUT /attendance/:id
-     * Updates an existing attendance entry.
-     */
+   
     public async update(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const id: number = parseInt(req.params.id as string, 10);
@@ -139,10 +126,7 @@ class AttendanceController {
         }
     }
 
-    /**
-     * DELETE /attendance/:id
-     * Deletes an attendance entry.
-     */
+ 
     public async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const id: number = parseInt(req.params.id as string, 10);
@@ -159,10 +143,7 @@ class AttendanceController {
         }
     }
 
-    /**
-     * GET /reports/attendance
-     * Monthly attendance summary: days_present and times_late per employee.
-     */
+   
     public async getMonthlyReport(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { error, value } = reportQuerySchema.validate(req.query);

@@ -9,10 +9,7 @@ import {
 class EmployeeService {
     private readonly tableName = 'employees';
 
-    /**
-     * Fetches all employees with optional search and pagination.
-     * Soft-deleted employees are excluded.
-     */
+ 
     public async getAll(
         query: EmployeeFilterQuery,
     ): Promise<{ employees: Employee[]; total: number }> {
@@ -22,7 +19,6 @@ class EmployeeService {
 
         let baseQuery = db(this.tableName).whereNull('deleted_at');
 
-        // search by name (partial match, case-insensitive)
         if (query.search) {
             baseQuery = baseQuery.where('name', 'ILIKE', `%${query.search}%`);
         }
@@ -39,9 +35,7 @@ class EmployeeService {
         return { employees, total };
     }
 
-    /**
-     * Fetches a single employee by ID. Throws if not found or soft-deleted.
-     */
+ 
     public async getById(id: number): Promise<Employee> {
         const employee: Employee | undefined = await db(this.tableName)
             .where({ id })
@@ -55,19 +49,14 @@ class EmployeeService {
         return employee;
     }
 
-    /**
-     * Creates a new employee record and returns it.
-     */
+
     public async create(payload: CreateEmployeePayload): Promise<Employee> {
         const [employee]: Employee[] = await db(this.tableName).insert(payload).returning('*');
         return employee;
     }
 
-    /**
-     * Updates an existing employee's details and/or photo.
-     */
+
     public async update(id: number, payload: UpdateEmployeePayload): Promise<Employee> {
-        // make sure employee exists
         await this.getById(id);
 
         const [updated]: Employee[] = await db(this.tableName)
@@ -78,9 +67,7 @@ class EmployeeService {
         return updated;
     }
 
-    /**
-     * Soft-deletes an employee by setting deleted_at timestamp.
-     */
+
     public async delete(id: number): Promise<void> {
         await this.getById(id);
 

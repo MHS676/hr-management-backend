@@ -1,9 +1,8 @@
 import { JwtPayload } from './index';
+import { Request } from 'express';
 
-declare global {
-    namespace Express {
-        interface Request {
-            user?: JwtPayload;
-        }
+declare module 'express' {
+    interface Request {
+        user?: JwtPayload;
     }
 }

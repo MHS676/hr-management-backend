@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import employeeService from '../services/employee.service';
+import { uploadToCloudinary } from '../config/cloudinary';
 import {
     createEmployeeSchema,
     updateEmployeeSchema,
@@ -13,10 +14,7 @@ import {
 } from '../types';
 
 class EmployeeController {
-    /**
-     * GET /employees
-     * Returns a paginated list of employees with optional search filter.
-     */
+ 
     public async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const query: EmployeeFilterQuery = {
@@ -47,10 +45,7 @@ class EmployeeController {
         }
     }
 
-    /**
-     * GET /employees/:id
-     * Returns a single employee by ID.
-     */
+  
     public async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const id: number = parseInt(req.params.id as string, 10);
@@ -86,9 +81,10 @@ class EmployeeController {
 
             const payload: CreateEmployeePayload = value;
 
-            // if a photo was uploaded, save its path
+            // if a photo was uploaded, upload to Cloudinary
             if (req.file) {
-                payload.photo_path = req.file.filename;
+                const imageUrl = await uploadToCloudinary(req.file.buffer);
+                payload.photo_path = imageUrl;
             }
 
             const employee: Employee = await employeeService.create(payload);
@@ -130,7 +126,8 @@ class EmployeeController {
             const payload: UpdateEmployeePayload = { ...req.body };
 
             if (req.file) {
-                payload.photo_path = req.file.filename;
+                const imageUrl = await uploadToCloudinary(req.file.buffer);
+                payload.photo_path = imageUrl;
             }
 
             const employee: Employee = await employeeService.update(id, payload);

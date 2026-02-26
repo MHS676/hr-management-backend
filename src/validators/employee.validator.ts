@@ -25,7 +25,7 @@ export const createEmployeeSchema = Joi.object({
         'any.required': 'Salary is required',
         'number.positive': 'Salary must be a positive number',
     }),
-});
+}).options({ allowUnknown: true, stripUnknown: true });
 
 export const updateEmployeeSchema = Joi.object({
     name: Joi.string().min(2).max(100),
@@ -34,4 +34,4 @@ export const updateEmployeeSchema = Joi.object({
     hiring_date: Joi.date().iso(),
     date_of_birth: Joi.date().iso(),
     salary: Joi.number().positive(),
-}).min(1);
+}).min(1).options({ allowUnknown: true, stripUnknown: true });

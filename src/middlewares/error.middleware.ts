@@ -2,9 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { ApiResponse } from '../types';
 
 class ErrorMiddleware {
-    /**
-     * Global error handler — catches unhandled errors and sends a clean JSON response.
-     */
+
     public handleError(err: Error, _req: Request, res: Response, _next: NextFunction): void {
         console.error('Unhandled Error:', err.message);
 

@@ -112,10 +112,7 @@ class AttendanceService {
         await db(this.tableName).where({ id }).del();
     }
 
-    /**
-     * Generates a monthly attendance report showing days present and late arrivals.
-     * Late rule: check_in_time > '09:45:00'
-     */
+ 
     public async getMonthlyReport(query: ReportQuery): Promise<AttendanceReportItem[]> {
         const [year, month] = query.month.split('-');
         const startDate = `${year}-${month}-01`;

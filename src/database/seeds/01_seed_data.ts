@@ -2,12 +2,12 @@ import { Knex } from 'knex';
 import bcrypt from 'bcryptjs';
 
 export async function seed(knex: Knex): Promise<void> {
-    // Clean existing entries
+    
     await knex('attendance').del();
     await knex('employees').del();
     await knex('hr_users').del();
 
-    // Insert HR users
+
     const passwordHash = await bcrypt.hash('password123', 10);
 
     await knex('hr_users').insert([

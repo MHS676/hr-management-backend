@@ -4,10 +4,7 @@ import { loginSchema } from '../validators/auth.validator';
 import { LoginPayload, ApiResponse } from '../types';
 
 class AuthController {
-    /**
-     * POST /auth/login
-     * Validates credentials and returns a JWT token.
-     */
+ 
     public async login(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { error, value } = loginSchema.validate(req.body);

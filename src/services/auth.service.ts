@@ -5,10 +5,7 @@ import env from '../config/env';
 import { HrUser, JwtPayload, LoginPayload } from '../types';
 
 class AuthService {
-    /**
-     * Authenticates an HR user with email and password.
-     * Returns a signed JWT token on success, or throws an error.
-     */
+ 
     public async login(payload: LoginPayload): Promise<string> {
         const user: HrUser | undefined = await db('hr_users')
             .where({ email: payload.email })

@@ -1,24 +1,6 @@
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
-import env from './env';
 
-// make sure upload folder exists
-const uploadDir = path.resolve(__dirname, '../../', env.UPLOAD_PATH);
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-    destination(_req, _file, cb) {
-        cb(null, uploadDir);
-    },
-    filename(_req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        const ext = path.extname(file.originalname);
-        cb(null, `employee-${uniqueSuffix}${ext}`);
-    },
-});
+const storage = multer.memoryStorage();
 
 const fileFilter = (
     _req: Express.Request,

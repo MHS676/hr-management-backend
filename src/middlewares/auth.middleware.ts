@@ -24,7 +24,7 @@ class AuthMiddleware {
 
         try {
             const decoded = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
-            req.user = decoded;
+            (req as any).user = decoded;
             next();
         } catch (error) {
             const response: ApiResponse<null> = {
