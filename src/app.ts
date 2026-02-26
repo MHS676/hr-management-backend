@@ -33,6 +33,21 @@ class App {
 
  
     private initializeRoutes(): void {
+        // root route
+        this.app.get('/', (_req: Request, res: Response) => {
+            res.status(200).json({
+                success: true,
+                message: 'HR Management API is running',
+                endpoints: {
+                    health: '/health',
+                    auth: '/auth/login',
+                    employees: '/employees',
+                    attendance: '/attendance',
+                    reports: '/reports/attendance',
+                },
+            });
+        });
+
         this.app.get('/health', (_req: Request, res: Response) => {
             res.status(200).json({ success: true, message: 'Server is running' });
         });
