@@ -4,10 +4,7 @@ import env from '../config/env';
 import { JwtPayload, ApiResponse } from '../types';
 
 class AuthMiddleware {
-    /**
-     * Protects routes by verifying the JWT token from the Authorization header.
-     * Attaches decoded user info to req.user if valid.
-     */
+
     public authenticate(req: Request, res: Response, next: NextFunction): void {
         const authHeader = req.headers.authorization;
 

@@ -11,10 +11,7 @@ import {
 class AttendanceService {
     private readonly tableName = 'attendance';
 
-    /**
-     * Lists attendance entries with optional filters (employee_id, date, range)
-     * and pagination support.
-     */
+
     public async getAll(
         query: AttendanceFilterQuery,
     ): Promise<{ records: Attendance[]; total: number }> {
@@ -52,9 +49,7 @@ class AttendanceService {
         return { records, total };
     }
 
-    /**
-     * Gets a single attendance record by ID.
-     */
+
     public async getById(id: number): Promise<Attendance> {
         const record: Attendance | undefined = await db(this.tableName).where({ id }).first();
 
@@ -65,12 +60,9 @@ class AttendanceService {
         return record;
     }
 
-    /**
-     * Creates a new attendance entry or updates check_in_time if (employee_id, date) already exists.
-     * This is an upsert operation.
-     */
+
     public async create(payload: CreateAttendancePayload): Promise<Attendance> {
-        // check if the employee exists (and is not soft-deleted)
+
         const employee = await db('employees')
             .where({ id: payload.employee_id })
             .whereNull('deleted_at')
@@ -80,7 +72,7 @@ class AttendanceService {
             throw Object.assign(new Error('Employee not found'), { statusCode: 404 });
         }
 
-        // upsert — if (employee_id, date) combo exists, update check_in_time
+
         const [record]: Attendance[] = await db(this.tableName)
             .insert(payload)
             .onConflict(['employee_id', 'date'])
@@ -90,9 +82,7 @@ class AttendanceService {
         return record;
     }
 
-    /**
-     * Updates an existing attendance entry by ID.
-     */
+
     public async update(id: number, payload: UpdateAttendancePayload): Promise<Attendance> {
         await this.getById(id);
 
@@ -104,20 +94,18 @@ class AttendanceService {
         return updated;
     }
 
-    /**
-     * Deletes an attendance entry by ID.
-     */
+
     public async delete(id: number): Promise<void> {
         await this.getById(id);
         await db(this.tableName).where({ id }).del();
     }
 
- 
+
     public async getMonthlyReport(query: ReportQuery): Promise<AttendanceReportItem[]> {
         const [year, month] = query.month.split('-');
         const startDate = `${year}-${month}-01`;
 
-        // calculate last day of month
+
         const lastDay = new Date(parseInt(year), parseInt(month), 0).getDate();
         const endDate = `${year}-${month}-${String(lastDay).padStart(2, '0')}`;
 

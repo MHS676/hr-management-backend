@@ -14,7 +14,7 @@ import {
 } from '../types';
 
 class EmployeeController {
- 
+
     public async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const query: EmployeeFilterQuery = {
@@ -45,7 +45,7 @@ class EmployeeController {
         }
     }
 
-  
+
     public async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const id: number = parseInt(req.params.id as string, 10);
@@ -63,10 +63,7 @@ class EmployeeController {
         }
     }
 
-    /**
-     * POST /employees
-     * Creates a new employee. Supports multipart form-data for photo upload.
-     */
+
     public async create(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { error, value } = createEmployeeSchema.validate(req.body);
@@ -81,7 +78,7 @@ class EmployeeController {
 
             const payload: CreateEmployeePayload = value;
 
-            // if a photo was uploaded, upload to Cloudinary
+
             if (req.file) {
                 const imageUrl = await uploadToCloudinary(req.file.buffer);
                 payload.photo_path = imageUrl;
@@ -101,15 +98,12 @@ class EmployeeController {
         }
     }
 
-    /**
-     * PUT /employees/:id
-     * Updates an existing employee. Also allows replacing the photo.
-     */
+
     public async update(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const id: number = parseInt(req.params.id as string, 10);
 
-            // if only a photo is being updated, skip body validation
+
             if (Object.keys(req.body).length > 0) {
                 const { error, value } = updateEmployeeSchema.validate(req.body);
                 if (error) {
@@ -144,10 +138,7 @@ class EmployeeController {
         }
     }
 
-    /**
-     * DELETE /employees/:id
-     * Soft-deletes an employee.
-     */
+
     public async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const id: number = parseInt(req.params.id as string, 10);
