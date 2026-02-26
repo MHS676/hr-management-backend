@@ -31,7 +31,7 @@ class App {
         this.app.use('/uploads', express.static(uploadsPath));
     }
 
- 
+
     private initializeRoutes(): void {
         // root route
         this.app.get('/', (_req: Request, res: Response) => {
